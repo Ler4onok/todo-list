@@ -1,23 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import { TaskList } from "./components/TaskList";
+import { Field } from "../src/components/Field";
+import React, { useState } from "react";
 
 function App() {
+  const [inputValue, setInputValue] = useState("");
+  const [taskList, setTaskList] = useState([]);
+
+  const handleInput = (event) => {
+    setInputValue(event.target.value);
+  };
+
+  const addToList = () => {
+    //immutability principle
+    //it's wrong to change (=mutate) the initial array, we need to create a new array and rewrite the data
+    const newList = [...taskList, inputValue];
+    setTaskList(newList);
+    setInputValue("");
+    // console.log(taskList)
+  };
+
+  const deleteTask = (taskToDelete) => {
+    const newList = taskList.filter((task) => task !== taskToDelete);
+    setTaskList(newList);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      className="App"
+      style={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Field
+        handleInput={handleInput}
+        addToList={addToList}
+        value={inputValue}
+      />
+      <TaskList taskList={taskList} deleteTask={deleteTask} />
     </div>
   );
 }
