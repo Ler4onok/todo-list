@@ -1,6 +1,9 @@
 import styled from "styled-components";
+// to import svg as react component
+import { ReactComponent as Delete } from "../../assets/delete.svg";
+import { motion } from "framer-motion";
 
-export const StyledTask = styled.div`
+export const StyledTask = styled(motion.div)`
   display: flex;
   position: relative;
   font-family: monospace;
@@ -11,7 +14,8 @@ export const StyledTask = styled.div`
   border-width: 2px;
   border-radius: 7px;
   margin: 7px;
-  padding: 0px 25px;
+  align-items: center;
+  padding: 0px 12px 0px 0px;
 `;
 
 export const StyledContainer = styled.div`
@@ -20,4 +24,14 @@ export const StyledContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
+export const StyledLabel = styled.label`
+  text-decoration: ${(props) => (props.isCompleted ? "line-through" : "none")};
+  font-size: 18px;
+`;
+
+export const DeleteIcon = styled(Delete)`
+  &:hover {
+    fill: red;
+  }
 `;
