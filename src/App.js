@@ -1,5 +1,6 @@
 import { TaskList } from "./components/TaskList";
-import { Field } from "../src/components/Field";
+import { Field } from "./components/Field";
+import { Modal } from "./components/Modal";
 import React, { useState } from "react";
 
 function App() {
@@ -7,6 +8,9 @@ function App() {
   const [taskList, setTaskList] = useState([
     { id: 1, title: "first", isCompleted: false },
   ]);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [isDeleteConfirmed, setDeleteConfirmed] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState(0);
 
   const handleInput = (event) => {
     setInputValue(event.target.value);
@@ -25,8 +29,8 @@ function App() {
   };
 
   const deleteTask = (taskId) => {
-    const newList = taskList.filter((task) => task.id !== taskId);
-    setTaskList(newList);
+    setTaskToDelete(taskId);
+    setModalOpen(true);
   };
 
   const handleTaskComplete = (taskId, isCompleted) => {
@@ -37,6 +41,18 @@ function App() {
     );
   };
 
+  const closeModal = () => {
+    console.log("close");
+    setModalOpen(false);
+  };
+
+  const confirmDelete = () => {
+    const newList = taskList.filter((task) => task.id !== taskToDelete);
+    setTaskList(newList);
+    setDeleteConfirmed(false);
+    setModalOpen(false);
+  };
+
   return (
     <div
       className="App"
@@ -44,8 +60,8 @@ function App() {
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
         alignItems: "center",
+        marginTop: "150px",
       }}
     >
       <Field
@@ -58,6 +74,10 @@ function App() {
         deleteTask={deleteTask}
         handleTaskComplete={handleTaskComplete}
       />
+      {console.log(isDeleteConfirmed)}
+      {isModalOpen && (
+        <Modal closeModal={closeModal} confirmDelete={confirmDelete} />
+      )}
     </div>
   );
 }
